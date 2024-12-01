@@ -1,0 +1,20 @@
+﻿  main.cpp
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(234,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(401,45): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(433,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(434,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(452,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(491,51): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(496,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(537,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(560,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(561,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(588,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(589,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(742,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(801,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(808,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(809,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(1026,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\main.cpp(1058,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Sablon.vcxproj -> D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\x64\Debug\Sablon.exe

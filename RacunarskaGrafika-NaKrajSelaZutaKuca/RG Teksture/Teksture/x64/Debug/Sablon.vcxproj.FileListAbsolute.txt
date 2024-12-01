@@ -1,0 +1,4 @@
+D:\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\x64\Debug\glew32.dll
+D:\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\x64\Debug\Sablon.exe
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\x64\Debug\glew32.dll
+D:\projekat\Grafika\RacunarskaGrafika-NaKrajSelaZutaKuca\RG Teksture\Teksture\x64\Debug\Sablon.exe
