@@ -10,7 +10,7 @@ out vec2 texCoord;
 
 
 uniform vec2 sunPos;
-uniform vec2 cloudCircleCenter;
+uniform vec2 smokePos;
 
 uniform vec2 dogPos;
 uniform int dogDirection; // Dog's direction (1 or -1)
@@ -114,7 +114,7 @@ void main()
             break;
 
         case 12: // Smoke
-            gl_Position = vec4(inPos.x + cloudCircleCenter.x, inPos.y + cloudCircleCenter.y, 0.0, 1.0);
+            gl_Position = vec4(inPos.x + smokePos.x, inPos.y + smokePos.y, 0.0, 1.0);
             channelCol = vec4(0.5, 0.5, 0.5, 1.0);
             break;
         case 13: // Dog's body

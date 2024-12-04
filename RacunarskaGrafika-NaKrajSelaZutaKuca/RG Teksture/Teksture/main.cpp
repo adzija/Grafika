@@ -291,9 +291,9 @@ int main(void)
     };
     initialize(VAO[18], VBO[18], trunkVertices, sizeof(trunkVertices));
     
-    /// Tree foliage (circle)
-    float foliageVertices[(2 + CRES) * 2]; // Circle vertices
-    generateCircle(foliageVertices, 0.65f, 0.2f, 0.25f, aspectRatio, 0); // Center at (0.65, -0.2), radius 0.25
+    // Tree foliage (circle)
+    float foliageVertices[(2 + CRES) * 2]; 
+    generateCircle(foliageVertices, 0.65f, 0.2f, 0.25f, aspectRatio, 0); 
     initialize(VAO[19], VBO[19], foliageVertices, sizeof(foliageVertices));
 
     // Food vertices (a small square)
@@ -307,21 +307,21 @@ int main(void)
 
     float speed = 0.5;
     float r = 1.0;
-    //float cloudOffsetX = 0.0f;
 
-    float animationStartTime = -1.0f; // Start time of the animation
-    bool animateOnce = false;         // Flag to control animation
+    float animationStartTime = -1.0f; 
+    bool animateOnce = false;         
 
     enum AnimationPhase { SunRising, SunSetting };
-    AnimationPhase animationPhase = SunSetting; // Start with sun rising
+    AnimationPhase animationPhase = SunSetting; 
 
-    float sunX = 0.0f, sunY = r; // Sun starts at the top
-    float moonX = 0.0f, moonY = -r; // Moon starts at the 
+    float sunX = 0.0f, sunY = r; 
+    float moonX = 0.0f, moonY = -r; 
 
-    float dogX = 0.0f; // Initial horizontal position
-    float dogY = -0.1f; // Fixed vertical position
+    float dogX = 0.0f; 
+    float dogY = -0.1f; 
     int dogDirection = 1; // 1 for right, -1 for left
-    float dogSpeed = 0.001f; // Movement speed
+    float dogSpeed = 0.001f; 
+
     // Variables for "Z" animation
     const int maxZs = 10;
     float zX[maxZs], zY[maxZs], zOpacity[maxZs], zOscillation[maxZs];
@@ -329,14 +329,17 @@ int main(void)
     float zSpawnInterval = 0.5f;
     float zLastSpawnTime = 0.0f;
 
+    // Initialize "Z" states
+    for (int i = 0; i < maxZs; i++) zActive[i] = false;
+
     bool isTransparent = false;
-    // Animation variables
+
+    // Animation variables stickman
     bool isWindowAnimating = false;
-    int activeWindowIndex = -1; // Index of the window being animated
-    float windowAnimationStartTime = 0.0f;  // Record animation start time
-    float windowAnimationProgress = 0.0f; // Animation progress (0.0 to 1.0)
-    const float animationDuration = 2.5f; // Animation duration in seconds
-    //bool stickmanVisible = false;
+    int activeWindowIndex = -1; 
+    float windowAnimationStartTime = 0.0f;  
+    float windowAnimationProgress = 0.0f; 
+    const float animationDuration = 2.5f; 
     bool stickmanVisibleWindow[4] = { false, false, false, false };
 
     const int targetFPS = 60;
@@ -347,27 +350,25 @@ int main(void)
 
     float paintProgress = 0.0f;
 
-    // Initialize "Z" states
-    for (int i = 0; i < maxZs; i++) zActive[i] = false;
+    
 
     //dog food
-    bool isFoodActive = false;  // Is the food currently active?
-    float foodX = 0.0f, foodY = 0.0f;  // Position of the food
-    double foodSpawnTime = 0.0;  // Time when the food was spawned
-    float waitTime = 3.0f;  // Random wait time before food disappears
-    float previousDogX = dogX, previousDogY = dogY; // Initial position before moving to food
+    bool isFoodActive = false;  
+    float foodX = 0.0f, foodY = 0.0f;  
+    double foodSpawnTime = 0.0;  
+    float waitTime = 3.0f; 
+    float previousDogX = dogX, previousDogY = dogY; 
     bool isReturningToInitial = false;
-    bool isDogAtFood = false;  // Is the dog at the food?
+    bool isDogAtFood = false; 
 
 
     GLuint sunPosLoc = glGetUniformLocation(unifiedShader, "sunPos");
-    GLuint cloudPosLoc = glGetUniformLocation(unifiedShader, "cloudCircleCenter");
+    GLuint smokePosLoc = glGetUniformLocation(unifiedShader, "smokePos");
     GLuint dogPosLoc = glGetUniformLocation(unifiedShader, "dogPos");
     GLuint dogDirectionLoc = glGetUniformLocation(unifiedShader, "dogDirection");
     GLuint zPosLoc = glGetUniformLocation(unifiedShader, "zPos");
     GLuint zAlphaLoc = glGetUniformLocation(unifiedShader, "zAlpha");
     GLuint transparencyLoc = glGetUniformLocation(unifiedShader, "transparency");
-    //GLuint windowColorLoc = glGetUniformLocation(unifiedShader, "windowColor");
     GLuint timeLoc = glGetUniformLocation(unifiedShader, "time");
     GLuint elementMode = glGetUniformLocation(unifiedShader, "mode");
     GLuint isSun = glGetUniformLocation(unifiedShader, "isSun");
@@ -398,7 +399,7 @@ int main(void)
         if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS && !animateOnce)
         {
             animateOnce = true;
-            animationStartTime = glfwGetTime(); // Record the start time
+            animationStartTime = glfwGetTime(); 
 
             if (animationPhase == SunRising)
             {
@@ -409,21 +410,22 @@ int main(void)
                 animationPhase = SunRising;
             }
         }
-        static bool keyWasPressed = false; // Tracks the key press state
+        static bool keyWasPressed = false; 
         if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
             if (!keyWasPressed) {
-                isTransparent = !isTransparent; // Toggle transparency state
-                keyWasPressed = true; // Mark the key as pressed
+                isTransparent = !isTransparent; 
+                keyWasPressed = true; 
+                isWindowAnimating = false;
             }
         }
         else {
-            keyWasPressed = false; // Reset the key press state when the key is released
+            keyWasPressed = false; 
         }
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
             paintProgress = std::min(paintProgress + 0.0005f, 1.0f);
         }
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-            paintProgress = 0.0f; // Reset painting progress
+            paintProgress = 0.0f; 
         }
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             double mouseX, mouseY;
@@ -436,7 +438,7 @@ int main(void)
             float fenceTopBoundary = -0.1f + fenceOffset;
 
             // Check if click is inside the house and on the grass
-            if (!isFoodActive && normalizedY > fenceTopBoundary && normalizedY < -0.25 && sunY < -0.0f) {  // Grass area
+            if (!isFoodActive && normalizedY > fenceTopBoundary && normalizedY < -0.25 && sunY < -0.0f) {
                 previousDogX = dogX;
                 previousDogY = dogY;
                 
@@ -444,7 +446,7 @@ int main(void)
                 foodY = -0.25f;
                 isFoodActive = true;
                 foodSpawnTime = glfwGetTime();
-                waitTime = 3.0f + ((rand() % 2000) / 1000.0f);  // Random wait time (3-5 seconds)
+                waitTime = 3.0f + ((rand() % 2000) / 1000.0f);  
             }
         }
         if (isFoodActive && !isDogAtFood && !isReturningToInitial) {
@@ -452,22 +454,29 @@ int main(void)
             float dy = foodY - dogY + 0.3;
             float distance = sqrt(dx * dx + dy * dy);
 
-            float moveSpeed = 0.002f;  // Adjust speed for smooth movement
-            float stopThreshold = 0.005f;  // Threshold for stopping close to the food (make this smaller for closer proximity)
+            float moveSpeed = 0.002f;  
+            float stopThreshold = 0.005f;  
 
-            if (distance > stopThreshold) {  // Continue moving until within the threshold distance
+            if (dx > 0) {
+                dogDirection = 1; 
+            }
+            else {
+                dogDirection = -1;
+            }
+
+            if (distance > stopThreshold) {  
                 dogX += moveSpeed * dx / distance;
                 dogY += moveSpeed * dy / distance;
             }
             else {
-                isDogAtFood = true;  // Dog has reached the food
-                foodSpawnTime = glfwGetTime();  // Record arrival time
+                isDogAtFood = true;  
+                foodSpawnTime = glfwGetTime(); 
             }
         }
         if (isDogAtFood && glfwGetTime() - foodSpawnTime > waitTime) {
-            isDogAtFood = false;            // Reset the "at food" flag
-            isFoodActive = false;           // Remove the food
-            isReturningToInitial = true;    // Start returning to the initial position
+            isDogAtFood = false;           
+            isFoodActive = false;          
+            isReturningToInitial = true;    
         }
         // Handle the return to the initial position
         if (isReturningToInitial) {
@@ -475,20 +484,20 @@ int main(void)
             float dy = previousDogY - dogY;
             float distance = sqrt(dx * dx + dy * dy);
 
-            float returnSpeed = 0.002f;  // Speed for returning
+            float returnSpeed = 0.002f;  
             if (distance > 0.005f) {
                 dogX += returnSpeed * dx / distance;
                 dogY += returnSpeed * dy / distance;
             }
             else {
-                isReturningToInitial = false; // Stop moving once back at the initial position
+                isReturningToInitial = false; 
             }
         }
 
         
-        if (!isWindowAnimating) {
+        if (!isWindowAnimating && isTransparent == false) {
             isWindowAnimating = true;
-            windowAnimationStartTime = glfwGetTime(); // Start animation
+            windowAnimationStartTime = glfwGetTime(); 
             activeWindowIndex = rand() % 4 + 8;      // Randomly select a window (VAOs 8 to 11)
         }
 
@@ -499,18 +508,18 @@ int main(void)
             // Clamp progress to [0.0, 1.0] and check if animation has ended
             if (windowAnimationProgress >= 1.0f) {
                 windowAnimationProgress = 1.0f;
-                isWindowAnimating = false; // Reset animation state
+                isWindowAnimating = false; 
             }
         }
 
         if (sunY < -0.0f) {
-            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && isFoodActive == false) {
                 if (dogX + dogSpeed <= 0.8) {
                     dogX += dogSpeed;
                 }
                 dogDirection = 1;
             }
-            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && isFoodActive == false) {
                 if (dogX - dogSpeed >= -0.8) {
                     dogX -= dogSpeed;
                 }
@@ -539,7 +548,7 @@ int main(void)
         glUniform1f(timeLoc, currentTime);
 
         // Reset animation flag after completing one circle
-        if (animateOnce && elapsedTime > (1 * M_PI) / speed)
+        if (animateOnce && elapsedTime > M_PI / speed)
         {
             animateOnce = false;
         }
@@ -628,13 +637,13 @@ int main(void)
 
         //house
         glBindVertexArray(VAO[4]);
-        glUniform1i(elementMode, 4); // Mode for the house
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 6); // Draw walls (two floors)
+        glUniform1i(elementMode, 4); 
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 6); 
 
         //roof
         glBindVertexArray(VAO[5]);
-        glUniform1i(elementMode, 5); // Mode for the roof
-        glDrawArrays(GL_TRIANGLES, 0, 3); // Draw roof
+        glUniform1i(elementMode, 5); 
+        glDrawArrays(GL_TRIANGLES, 0, 3); 
 
         // Render divider line
         glBindVertexArray(VAO[6]);
@@ -642,113 +651,113 @@ int main(void)
         glDrawArrays(GL_LINES, 0, 2);
 
         if (!(isFoodActive && dogX >= -0.05f && dogX <= 0.05f )) {
-            glBindVertexArray(VAO[7]);  // Door VAO
-            glUniform1i(elementMode, 7);  // Door mode
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  // Render the door
+            glBindVertexArray(VAO[7]);  
+            glUniform1i(elementMode, 7);  
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
         }
 
 
         // Render windows with transparency if toggled
-        for (int i = 8; i <= 11; i++) { // Loop through window VAOs
-            glBindVertexArray(VAO[i]);  // Bind the current window VAO
-            glUniform1i(elementMode, 8); // Mode for windows
-            glUniform1f(transparencyLoc, isTransparent ? 0.5f : 1.0f); // Set transparency (alpha)
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // Render the window
+        for (int i = 8; i <= 11; i++) { 
+            glBindVertexArray(VAO[i]);  
+            glUniform1i(elementMode, 8); 
+            glUniform1f(transparencyLoc, isTransparent ? 0.5f : 1.0f); 
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
         }
 
         // Render windows and highlight the active one
         for (int i = 8; i <= 11; i++) {
             glBindVertexArray(VAO[i]);
-            glUniform1i(elementMode, 8); // Mode for windows
+            glUniform1i(elementMode, 8); 
 
             if (i == activeWindowIndex && isWindowAnimating) {
                 glUniform1f(glGetUniformLocation(unifiedShader, "windowAnimationProgress"), windowAnimationProgress);
             }
             else {
-                glUniform1f(glGetUniformLocation(unifiedShader, "windowAnimationProgress"), 0.0f); // Fully yellow
+                glUniform1f(glGetUniformLocation(unifiedShader, "windowAnimationProgress"), 0.0f); 
             }
 
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // Render the window
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
         }
 
         if (isWindowAnimating && windowAnimationProgress > 0.7f) {
-            int stickmanIndex = activeWindowIndex - 8; // Map active window to stickman index
+            int stickmanIndex = activeWindowIndex - 8; 
             glBindVertexArray(stickmanVAO[stickmanIndex]);
-            glUniform1i(elementMode, 15); // Mode for stickman
+            glUniform1i(elementMode, 15); 
             glUniform1i(useTextureLoc, GL_TRUE);
             glBindTexture(GL_TEXTURE_2D, stickmanTexture);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             glUniform1i(useTextureLoc, GL_FALSE);
         }
-        // Render stickman in the first-floor left window if transparent
+        // Render stickman in the first-floor right window if transparent
         if (isTransparent) {
-            glBindVertexArray(stickmanVAO[1]); // Bind the VAO for the first-floor left window
-            glUniform1i(elementMode, 15); // Assign a unique mode for stickman
+            glBindVertexArray(stickmanVAO[1]); 
+            glUniform1i(elementMode, 15); 
             glUniform1i(useTextureLoc, GL_TRUE);
             glBindTexture(GL_TEXTURE_2D, stickmanTexture);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // Draw stickman texture
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
             glUniform1i(useTextureLoc, GL_FALSE);
         }
         
         // Render vertical poles (independent)
         for (int i = 0; i < 5; i++) {
             glBindVertexArray(VAO[12]);
-            glUniform1i(elementMode, 9); // Mode for vertical poles
-            glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4); // Each pole has 4 vertices
+            glUniform1i(elementMode, 9); 
+            glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4); 
         }
 
         // Render horizontal bars
         for (int i = 0; i < 3; i++) {
             glBindVertexArray(VAO[13]);
-            glUniform1i(elementMode, 10); // Mode for horizontal bars
-            glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4); // All 3 bars, 4 vertices each
+            glUniform1i(elementMode, 10); 
+            glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4); 
         }
         
         // Render chimney
         glBindVertexArray(VAO[14]);
-        glUniform1i(elementMode, 11); // Mode for chimney
+        glUniform1i(elementMode, 11); 
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
        
 
         // Smoke animation
-        glBindVertexArray(VAO[15]); // Assuming VAO[15] is used for smoke
+        glBindVertexArray(VAO[15]); 
         glUniform1i(elementMode, 12);
 
-        float baseChimneyX = 0.12f; // Chimney's X position
-        float baseChimneyY = -0.08f;  // Chimney's top Y position
+        float baseChimneyX = 0.12f; 
+        float baseChimneyY = -0.08f;  
 
         // Constants for animation
-        const int maxPuffs = 10; // Maximum number of active puffs
-        const float spawnInterval = 2.0f; // Time between new puffs (in seconds)
-        const float moveSpeed = 0.0002f; // Vertical movement speed
+        const int maxPuffs = 10; 
+        const float spawnInterval = 2.0f; 
+        const float moveSpeed = 0.0002f;
 
         // Animation variables
-        static float puffOffsetsY[maxPuffs];   // Vertical positions of each puff
-        static bool puffActive[maxPuffs];      // Active state for each puff
-        static float lastSpawnTime = 0.0f;     // Time of the last puff spawn
+        static float puffOffsetsY[maxPuffs];   
+        static bool puffActive[maxPuffs];      
+        static float lastSpawnTime = 0.0f;     
 
-        // Initialize puff positions and states (run only once)
+        // Initialize puff positions and states 
         static bool initialized = false;
         if (!initialized) {
             for (int i = 0; i < maxPuffs; i++) {
-                puffOffsetsY[i] = -1.0f; // Start far below the chimney
-                puffActive[i] = false;   // All puffs initially inactive
+                puffOffsetsY[i] = -1.0f; 
+                puffActive[i] = false;   
             }
             initialized = true;
         }
 
         // Update logic
-        currentTime = glfwGetTime(); // Get current time in seconds
+        currentTime = glfwGetTime(); 
         if (currentTime - lastSpawnTime >= spawnInterval) {
-            lastSpawnTime = currentTime; // Update spawn time
+            lastSpawnTime = currentTime; 
 
             // Find the first inactive puff and activate it
             for (int i = 0; i < maxPuffs; i++) {
                 if (!puffActive[i]) {
                     puffOffsetsY[i] = 0.0f; // Reset position to chimney top
-                    puffActive[i] = true;  // Activate puff
-                    break; // Only activate one puff at a time
+                    puffActive[i] = true;  
+                    break; 
                 }
             }
         }
@@ -756,10 +765,10 @@ int main(void)
         // Move active puffs
         for (int i = 0; i < maxPuffs; i++) {
             if (puffActive[i]) {
-                puffOffsetsY[i] += moveSpeed; // Move puff upward
+                puffOffsetsY[i] += moveSpeed; 
 
                 if (puffOffsetsY[i] > 1.0f) {
-                    puffActive[i] = false; // Deactivate puff when off-screen
+                    puffActive[i] = false; 
                 }
             }
         }
@@ -767,11 +776,11 @@ int main(void)
         // Render all active puffs
         for (int i = 0; i < maxPuffs; i++) {
             if (puffActive[i]) {
-                float puffX = baseChimneyX;              // Fixed X position at chimney
-                float puffY = baseChimneyY + puffOffsetsY[i]; // Current Y position
+                float puffX = baseChimneyX;              
+                float puffY = baseChimneyY + puffOffsetsY[i]; 
 
-                glUniform2f(cloudPosLoc, puffX, puffY);  // Pass position to shader
-                glDrawArrays(GL_TRIANGLE_FAN, 32 * i, 32); // Render puff
+                glUniform2f(smokePosLoc, puffX, puffY);  
+                glDrawArrays(GL_TRIANGLE_FAN, 32 * i, 32); 
             }
         }
 
@@ -1019,6 +1028,12 @@ void initializeTexture(unsigned int VAO, unsigned int VBO, float* vertices, int 
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+/*
+* beg: Početna pozicija u nizu za podatke trenutnog kruga
+  + 2: Prva tačka na obodu dolazi nakon centra kruga.
+  + 2 * i: Pomera se za 2 mesta
+*/
 void generateCircle(float circle[], float centerX, float centerY, float radius, float aspectRatio, int beg) {
     circle[beg] = centerX; // Center X
     circle[beg + 1] = centerY; // Center Y
